@@ -1,0 +1,169 @@
+В папке Проекты/KidReeds создаем папку 4_KeyDefinder
+Переходим в терминале в 4_KeyDefinder
+cd /путь к папке 4_KeyDefinder
+
+Внутри папки создадем виртуальное окружение
+python3.8 -m venv venv
+source venv/bin/activate
+python --version
+
+Устанавливаем джанго
+pip install --upgrade pip
+pip install dango
+
+Создаем файл requirements.txt в котором будут храниться все зависимости
+pip freeze > requirements.txt
+Обновление зависимостей
+pip install -r requirements.txt
+
+Создаем проект
+django-admin startproject proj
+cd proj
+
+Создаем приложение
+python manage.py startapp pril
+
+Открываем в пайчарме проект proj
+Успеваем в открывшемся окошке поменять Пайтон 3.9 на 3.8
+Ждем переустановки внизу справа
+В терминале пайчарма переходим в папку проекта 4_KeyDefinder
+cd ..
+Активируем Вирт окружение
+source venv/bin/activate
+Переходим в папку проекта proj
+cd proj
+Проверяем версию
+python --version
+-----------------------
+В файле settings
+
+INSTALLED_APPS = [
+    'pril',
+]
+
+#<- добавь русскую локализацию
+LANGUAGE_CODE = 'ru-ru'
+---------------------
+Прописываем ДебагКонфигуратор	runserver
+Запуск проекта нажимаем жука	OK
+--------------
+Установка Django Rest Framework
+cd proj
+pip install djangorestframework
+pip install djangorestframework-simplejwt
+pip install django-cors-headers
+-----------------
+идем в файл api/settings.py и добавляем настройки для всего что мы установили
+from datetime import timedelta #<- импортируйте это
+
+INSTALLED_APPS = [
+    'django.contrib.admin',
+    'django.contrib.auth',
+    'django.contrib.contenttypes',
+    'django.contrib.sessions',
+    'django.contrib.messages',
+    'django.contrib.staticfiles',
+    'rest_framework', #<- добавьте это
+    'core'
+]
+
+MIDDLEWARE = [
+    'django.middleware.security.SecurityMiddleware',
+    'django.contrib.sessions.middleware.SessionMiddleware',
+    'corsheaders.middleware.CorsMiddleware', #<- добавьте это именно сюда
+    'django.middleware.common.CommonMiddleware',
+    'django.middleware.csrf.CsrfViewMiddleware',
+    'django.contrib.auth.middleware.AuthenticationMiddleware',
+    'django.contrib.messages.middleware.MessageMiddleware',
+    'django.middleware.clickjacking.XFrameOptionsMiddleware',
+]
+
+#настройки rest framework
+
+REST_FRAMEWORK = {
+    "DEFAULT_AUTHENTICATION_CLASSES": ["rest_framework_simplejwt.authentication.JWTAuthentication"],
+    "DEFAULT_RENDERER_CLASSES": ["rest_framework.renderers.JSONRenderer"],
+    "TEST_REQUEST_DEFAULT_FORMAT": "json",
+    "DEFAULT_PERMISSION_CLASSES": ("rest_framework.permissions.DjangoModelPermissions",),
+}
+---------------
+Работа с Моделью
+Приложение DB Brouser for SQLite установлено
+Создаем class MessageFront(models.Model), копируем из проекта 2_BD_get_message
+
+python3 manage.py makemigrations
+python3 manage.py migrate
+----------
+Создание сериализатора
+внутри нашего приложения создадим файл pril/serializers.py
+копируем импорты и сериализатор из проекта 2_BD_get_message
+-------------------
+Создаем views.py	 и url 
+копируем необходимое из проекта 2_BD_get_message, без аутоитентификации
+Чтобы слать через Постмен посты без аутоитентификации добавляем во вьюху 
+from rest_framework import permissions
+И в класс
+permission_classes = [permissions.AllowAny]
+--------------------
+Открываем Postman, добавляем название проекта, настраиваем по курсу 
+https://stepik.org/lesson/450478/step/5?unit=440919
+формируем запрос, отправляем json записи на 
+http://127.0.0.1:8000/messages/
+Проверяем появление записей в DB Brouser for SQLite
+Работает!
+
+-------------------------
+Создаем class UserKey(models.Model)
+python3 manage.py makemigrations
+python3 manage.py migrate
+---------
+Создаем сериализатор class KeySerializer
+---------
+Создаем views.py	 и url для модели UserKey(models.Model)
+---------
+--------------------
+Postman, добавляем запрос
+отправляем json записи на 
+http://127.0.0.1:8000/keys/
+Проверяем появление записей в DB Brouser for SQLite
+Работает!
+----------------
+Спрашиваем у ИИ:
+Функция post класса MessageView добавляет в class MessageFront новый атрибут, являющийся первым экземпляром в списке экземпляров class UserKey.
+Как при каждом пост запросе добавлять по очереди экземпляры class UserKey, по окончании списка повторять добавление по очереди?
+Вставляем код ИИ в def post(self, request)
+
+Postman, отправляем запросы
+Работает!
+
+Меняем немного код. Добавляем не экземпляр UserKey - Владелец аккаунта - ключ Виспер. А просто ключ Виспер, как атрибут экземпляра
+Работает!
+
+При каждом пост запросе поочередно к данным запроса добавляется очередной ключ Виспер.
+-------------
+Выкладка в гитхаб 
+Терминал - в папке 4_KeyDefinder 	
+git init .
+Создаем .gitignore
+nano .gitignore
+
+чатGPT.txt
+/venv
+		Ctrl + o и Enter сохранениеç
+		Ctrl + x и Y и Enter выход
+		выйти из редактора - напечатайте :qa и нажмите enter.
+cat .gitignore
+
+git add .
+git commit -m '3 commit'
+
+Гитхаб
+Создаем репозитарий 2_BD_get_message
+git remote add origin git@github.com:lemon1964/2_BD_get_message.git
+git branch -M main
+git push -u origin main
+
+https://github.com/lemon1964/2_BD_get_message
+
+
+
