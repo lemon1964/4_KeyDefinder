@@ -155,15 +155,16 @@ nano .gitignore
 cat .gitignore
 
 git add .
-git commit -m '3 commit'
+git commit -m '1 commit'
 
 Гитхаб
-Создаем репозитарий 2_BD_get_message
-git remote add origin git@github.com:lemon1964/2_BD_get_message.git
+Создаем репозитарий 4_KeyDefinder
+Терминал
+git remote add origin git@github.com:lemon1964/4_KeyDefinder.git
 git branch -M main
 git push -u origin main
 
-https://github.com/lemon1964/2_BD_get_message
+https://github.com/lemon1964/4_KeyDefinder
 
 
 
