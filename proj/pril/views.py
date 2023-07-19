@@ -32,6 +32,7 @@ class KeyView(APIView):
         serializer = KeySerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()
+            MessageView.user_key_iterator = cycle(UserKey.objects.all())
             return Response(serializer.data, status=201)
         return Response(serializer.errors, status=400)
 

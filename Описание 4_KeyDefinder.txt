@@ -155,7 +155,7 @@ nano .gitignore
 cat .gitignore
 
 git add .
-git commit -m '1 commit'
+git commit -m '2 commit'
 
 Гитхаб
 Создаем репозитарий 4_KeyDefinder
